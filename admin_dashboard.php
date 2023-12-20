@@ -33,13 +33,13 @@ include 'connex_db.php';
                         <a class="nav-link" href="?page=users_managment">User Section</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=index">Category Section</a>
+                        <a class="nav-link" href="?page=category_managment">Category Section</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?page=product_manag">Product Section</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?page=order-management">Order Section</a>
+                        <a class="nav-link" href="?page=order_management">Order Section</a>
                     </li>
                 </ul>
             </div>
@@ -55,7 +55,7 @@ include 'connex_db.php';
         $page = $_GET['page'];
 
         // Validate and include the selected page
-        if (in_array($page, ['users_managment', 'index', 'product_manag', 'order-management']) && file_exists($page . '.php')) {
+        if (in_array($page, ['users_managment', 'category_managment', 'product_manag', 'order_management']) && file_exists($page . '.php')) {
             include($page . '.php');
         } else {
             echo '<p class="alert alert-danger">Invalid page selected.</p>';

@@ -67,13 +67,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["user_id"])) {
                     echo '<td>' . $row->getUserId() . '</td>';
                     echo '<td>' . $row->getUsername() . '</td>';
                     echo '<td>' . $row->getEmail() . '</td>';
-                    echo '<td>' . $row->getPassword() . '</td>';
+                    echo '<td>' . $row->getRole(). '</td>';
                     echo '<td>' . ($row->getRole() ? 'Yes' : 'No') . '</td>';
-                    echo '<td>' . $row->isVerified() . '</td>';
+                    
                     echo '<td>' . $row->getFullName() . '</td>';
+                    echo '<td>' . $row->getPhoneNumber() . '</td>';
                     echo '<td>' . $row->getAddress() . '</td>';
                     echo '<td>' . $row->getCity() . '</td>';
-                    echo '<td>' . (array_key_exists('disabled', $userSql) ? ($row->isDisabled() ? 'Disabled' : 'Enabled') : 'N/A') . '</td>';
+                    echo '<td>' . (array_key_exists('disabled',$userSql ) ? ($row->isDisabled() ? 'Disabled' : 'Enabled') : 'N/A') . '</td>';
                     echo '<td>';
                     echo '<button type="submit" name="toggle_disable" class="btn btn-warning btn-sm btn-disable mx-2" value="' . $row->getUserId(). '">';
                     echo (array_key_exists('disabled', $userSql) && $row->getUserId() ? 'Enable' : 'Disable');
@@ -184,4 +185,5 @@ foreach($userSql as $row){
     echo '   </div>';
     echo '</div>';
 }
+include("footer.php");
 ?>

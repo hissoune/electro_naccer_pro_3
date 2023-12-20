@@ -28,11 +28,21 @@ public function get_users(){
     return $userss;
 
 }
+public function get_chaked_user($email , $password ){
+
+    $query = "SELECT * FROM Users WHERE email = '$email' AND password = '$password' AND disabled = 0";
+    $stmt = $this->db->query($query);
+    $stmt->execute();
+    $result = $stmt->fetch();
+    return $result;
+}
 
 public function insert_users($User){
     $query="INSERT INTO users VALUES (0, '".$User->getUsername()."','".$User-> getEmail()."', '".$User-> getPassword()."','".$User->getRole()."','".$User-> isVerified()."','".$User->getFullName()."','".$User-> getPhoneNumber()."','".$User->getAddress()."','".$User-> isDisabled()."','".$User->getCity()."') ";
-    $stmt = $this->db->query($query);
-    $stmt -> execute();
+    $result= $stmt = $this->db->query($query);
+    
+    return $result;
+  
 
 
 
