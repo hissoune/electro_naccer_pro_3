@@ -1,4 +1,9 @@
 <?php
+
+session_start();
+if(!isset( $_SESSION["user"])){
+    header("location: logout.php");
+   }else{
 require_once 'productsDAO.php'; 
 require_once 'categoryDAO.php'; 
 
@@ -113,3 +118,5 @@ require_once 'HEAD.php';
     </div>
 </body>
 </html>
+<?php
+   }

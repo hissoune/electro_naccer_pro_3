@@ -1,13 +1,18 @@
 <?php 
+
+if (!isset($_SESSION['user_id'])){
+    header('location:logout.php');
+}
 require_once 'categoryDAO.php';
  $category = new categoryDAO();
  $categorys= $category->get_categorys();
  require_once 'HEAD.php';
 ?>
 
-    <h1>Liste des category</h1>
-    <div class="container "><a  class="btn btn-primary " href="ajout_category.php">ajout category</a></div>
-    <table class="table table-bordred">
+    <h1 class="text-center">Liste des category</h1>
+    <div class="container "><a  class="btn btn-primary mb-2" href="ajout_category.php">ajout category</a></div>
+    <div class="container">
+    <table class="table table-bordered">
     <tr class="table ">
                
                <th class="p-3  border-black" scope="col">category_id</th>
@@ -41,6 +46,7 @@ require_once 'categoryDAO.php';
         ?>
             
     </table>
+    </div>
 </body>
 </html>
 

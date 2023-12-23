@@ -1,9 +1,12 @@
 <?php
+
+if (!isset($_SESSION['user_id'])){
+    header('location:logout.php');
+}
  require_once 'UserDAO.php';
  $users =new UserDAO();
   $dbs= new Database();
-
-    // Toggle the disable status for the specified user
+   
     
 
 // Fetch users from the database
@@ -186,4 +189,5 @@ foreach($userSql as $row){
     echo '</div>';
 }
 include("footer.php");
+   
 ?>

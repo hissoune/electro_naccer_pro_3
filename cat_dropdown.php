@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset( $_SESSION["user"])){
+    header("location: logout.php");
+   }else{
 require_once 'categoryDAO.php'; 
 $category =new categoryDAO();
 
@@ -15,4 +19,5 @@ $categories= $category->get_categorys();
             
             echo '<option value="' . $categoryId . '" style="color: red; font-size: 18px;">' . $categoryName . '</option>';
         }
+    }
         ?>

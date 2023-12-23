@@ -7,6 +7,76 @@ class ProductDAO {
     public function __construct(){
         $this->db = Database::getInstance()-> gettconnection();
     }
+    public function getProductsByCategory($categoryId)
+    {
+        try {
+            $sql = 'SELECT * FROM Products WHERE category_id = :categoryId AND disabled = FALSE';
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $products = [];
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $product = new Product(
+                    $row['reference'],
+                    $row['image'],
+                    $row['barcode'],
+                    $row['label'],
+                    $row['purchase_price'],
+                    $row['final_price'],
+                    $row['price_offer'],
+                    $row['description'],
+                    $row['min_quantity'],
+                    $row['stock_quantity'],
+                    $row['category_id'],
+                    $row['disabled']
+                );
+
+                // Add more attributes if needed
+
+                $products[] = $product;
+            }
+
+            return $products;
+        } catch (PDOException $e) {
+            throw new Exception('Error getting products by category: ' . $e->getMessage());
+        }
+    }
+
+    public function getAllProducts()
+    {
+        $query = "SELECT * FROM products"; // Replace 'products' with your actual table name
+        $statement = $this->db->prepare($query);
+        $statement->execute();
+
+        // Fetch all products
+        $products = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        // Convert the associative array to an array of Product objects
+        $productObjects = [];
+        foreach ($products as $product) {
+            $productObjects[] = new Product(
+                $product['product_id'],
+                $product['reference'],
+                $product['image'],
+                $product['barcode'],
+                $product['label'],
+                $product['purchase_price'],
+                $product['final_price'],
+                $product['price_offer'],
+                $product['description'],
+                $product['min_quantity'],
+                $product['stock_quantity'],
+                $product['category_id'],
+                $product['disabled']
+            );
+        }
+
+        return $productObjects;
+    }
+
+
     public function getProductById($product_id){
         $query = "SELECT * FROM products WHERE product_id ='$product_id' ";
         $stmt = $this->db->query($query);

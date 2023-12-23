@@ -12,6 +12,13 @@ class UserDAO{
 public function get_user_by_id($id){
     $query="SELECT * FROM users where user_id ='$id' ";
     $stmt = $this->db->query($query);
+   
+    $result = $stmt->fetch();
+    return $result;
+}
+public function get_user_by_emeil($email){
+    $query= "SELECT user_id from users where email='$email'";
+    $stmt = $this->db->query($query);
     $stmt->execute();
     $result = $stmt->fetch();
     return $result;

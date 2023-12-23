@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset( $_SESSION["user"])){
+    header("location: logout.php");
+   }else{
 require_once 'categoryDAO.php';
 
 $category = []; // Define an empty array for $category initially
@@ -64,3 +68,5 @@ require_once 'HEAD.php';
     </div>
 </body>
 </html>
+<?php
+   }

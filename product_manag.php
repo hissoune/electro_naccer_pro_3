@@ -1,4 +1,9 @@
 <?php 
+
+if (!isset($_SESSION['user_id'])){
+    header('location:logout.php');
+}
+
 require_once 'productsDAO.php'; // Include the ProductDAO
 $productDAO = new ProductDAO(); // Create an instance of ProductDAO
 $products = $productDAO->getProducts(); // Fetch products
@@ -10,7 +15,7 @@ require_once 'HEAD.php'; // Include your head file
 <div class="container ">
     <a class="btn btn-primary  my-3" href="ajout_products.php">Add Product</a>
 </div>
-
+<div  class="container-fluid">
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -70,5 +75,6 @@ require_once 'HEAD.php'; // Include your head file
     <?php } ?>
     </tbody>
 </table>
+</div>
 </body>
 </html>

@@ -1,4 +1,8 @@
 <?php
+session_start();
+if(!isset( $_SESSION["user"])){
+    header("location: logout.php");
+   }else{
 require_once 'categoryDAO.php';
 $categoryDAO = new categoryDAO();
 require_once 'HEAD.php';
@@ -63,3 +67,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         categoriesContainer.appendChild(newCategoryEntry);
     }
 </script>
+<?php
+   }

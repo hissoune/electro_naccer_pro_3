@@ -1,6 +1,11 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])){
+    header('location:logout.php');
+}
 include 'connex_db.php';
 
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -21,14 +26,14 @@ include 'connex_db.php';
     include("nav.php")
     ?>
 
-    <div class="container mt-5">
+    <div class="container-fluid mt-5">
 
-        <h2 class="mb-4">Menu</h2>
+        <h2 class="mb-4 text-center">Menu</h2>
 
         <!-- Navigation Menu -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-            <div class="container-fluid">
-                <ul class="navbar-nav">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 ">
+            <div class="container-fluid ">
+                <ul class="navbar-nav d-flex justify-content-betwen">
                     <li class="nav-item">
                         <a class="nav-link" href="?page=users_managment">User Section</a>
                     </li>
@@ -67,6 +72,7 @@ include 'connex_db.php';
 
    
     include("footer.php");
+
     
     ?>
 
