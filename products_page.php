@@ -3,6 +3,7 @@
 include_once 'connex_db.php';
 include_once 'productsDAO.php';
 include_once 'categoryDAO.php';
+include_once 'HEAD.php';
 
 // Function to get all products or products by category
 function getProducts($categoryId = null)
@@ -20,9 +21,10 @@ function getProducts($categoryId = null)
         // Display products
         foreach ($products as $product) {
             // Display each product as a card
-            echo '<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white">';
-            echo '<img class="w-full" src="' . $product->gettimage() . '" alt="' . $product->gettlabel() . '">';
-            echo '<div class="px-6 py-4">';
+            
+            echo '<div class="max-w-sm rounded overflow-hidden shadow-lg bg-white card w-25 col-3 ">';
+            echo '<img class="card-img w-full" src="' . $product->gettimage() . '" alt="' . $product->gettlabel() . '">';
+            echo '<div class="card-body px-6 py-4">';
             echo '<div class="font-bold text-xl mb-2">' . $product->gettlabel() . '</div>';
             echo '<p class="text-gray-700 text-base">Description: ' . $product->gettdescription() . '</p>';
             echo '<p class="text-gray-700 text-base">Price: $' . $product->gettfinal_price() . '</p>';

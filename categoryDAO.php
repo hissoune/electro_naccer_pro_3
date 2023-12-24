@@ -64,7 +64,7 @@ public function getAllCategories()
         $categoryObjects[] = new Category(
             $category['category_id'],
             $category['category_name'],
-            $category['category_img'],
+            $category['imag_category'],
         );
     }
 

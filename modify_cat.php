@@ -53,7 +53,7 @@ require_once 'HEAD.php';
     <div class="container justify-content-center p-5">
         <form class="form-section" method="post" enctype="multipart/form-data">
             <div class="form-group mb-3 w-50 mx-5">
-                <label for="name_category">New name</label>
+                <label for="name_category">New  category name</label>
                 <input type="text" id="name_category" class="form-control" name="name_cat" value="<?php echo $category['category_name']; ?>" >
             </div>
             
