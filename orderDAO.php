@@ -32,6 +32,21 @@ class OrderDAO{
     
 
     }
+    public function insertOrder($order) {
+        $query = "INSERT INTO Orders (user_id, order_date, total_price, order_status, send_date, delivery_date)
+                  VALUES (
+                    '" . $order->getUserId() . "',
+                    " . $order->getOrderDate() . ",
+                    " . $order->getTotalPrice() . "
+                    " . $order->getOrderStatus() . "
+                    " . $order->getSendDate() . "
+                    " . $order->getDeliveryDate() . "
+                  )";
+        
+        $stmt = $this->db->query($query);
+        $stmt->execute();
+    }
+    
     public function delet_order($id){
         $query= "DELETE FROM Orders WHERE order_id = $id";
         $stmt = $this->db->query($query);

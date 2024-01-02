@@ -9,13 +9,37 @@ class UserDAO{
     public function __construct(){
       $this->db = Database::getInstance()->gettconnection();
     } 
-public function get_user_by_id($id){
-    $query="SELECT * FROM users where user_id ='$id' ";
-    $stmt = $this->db->query($query);
-   
-    $result = $stmt->fetch();
-    return $result;
-}
+    public function getUserById($userId)
+    {
+        $query = "SELECT * FROM Users WHERE user_id = :userId";
+        $statement = $this->db->prepare($query);
+        $statement->execute([':userId' => $userId]);
+
+        // Fetch the user data as an associative array
+        $userData = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Check if user data is fetched
+        if ($userData) {
+            // Create a new User object with the fetched data
+            $user = new User(
+                $userData['user_id'],
+                $userData['username'],
+                $userData['email'],
+                $userData['password'],
+                $userData['role'],
+                $userData['verified'],
+                $userData['full_name'],
+                $userData['phone_number'],
+                $userData['address'],
+                $userData['disabled'],
+                $userData['city']
+            );
+
+            return $user;
+        } else {
+            return null; // User not found
+        }
+    }
 public function get_user_by_emeil($email){
     $query= "SELECT user_id from users where email='$email'";
     $stmt = $this->db->query($query);
@@ -35,13 +59,55 @@ public function get_users(){
     return $userss;
 
 }
-public function get_chaked_user($email , $password ){
+public function authenticateUser($username, $password)
+{
 
-    $query = "SELECT * FROM Users WHERE email = '$email' AND password = '$password' AND disabled = 0";
-    $stmt = $this->db->query($query);
-    $stmt->execute();
-    $result = $stmt->fetch();
-    return $result;
+    // Assuming your users table has columns 'username', 'password', 'disabled', 'verified', and 'role'
+    $query = "SELECT * FROM users WHERE username = :username AND password = :password";
+    $statement = $this->db->prepare($query);
+    $statement->bindParam(':username', $username, PDO::PARAM_STR);
+    $statement->bindParam(':password', $password, PDO::PARAM_STR);
+    $statement->execute();
+
+    // Check if a matching user is found
+    if ($statement->rowCount() > 0) {
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // Extract user data
+        $disabled = $user['disabled'];
+        $verified = $user['verified'];
+        $role = $user['role'];
+
+        if (!$disabled) {
+            // Check if the user is verified
+            if ($verified) {
+                // Store user data in the session
+                $_SESSION['user']['user_id'] = $user['user_id'];
+                $_SESSION['user']['username'] = $user['username'];
+                $_SESSION['user']['role'] = $role;
+
+                if ($role == 'admin') {
+                    // Redirect to a dashboard for admin
+                    header('Location:products_page.php');
+                    exit();
+                } else {
+                    // Redirect to index for regular user
+                    header('Location: products_page.php');
+                    exit();
+                }
+            } else {
+                // Redirect to unverified page
+                header('Location: unverified.php');
+                exit();
+            }
+        } else {
+            // Redirect to disabled page
+            header('Location: disabled.php');
+            exit();
+        }
+    } else {
+        return false; // Authentication failed (no matching user)
+    }
 }
 
 public function insert_users($User){
