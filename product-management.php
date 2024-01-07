@@ -1,75 +1,71 @@
-<?php 
-include 'productsDAO.php'; // Include the ProductDAO
-$productDAO = new ProductDAO(); // Create an instance of ProductDAO
-$products = $productDAO->getProducts(); // Fetch products
-require_once 'HEAD.php'; // Include your head file
-?>
+<!-- Content Area -->
+<div class="container mx-auto mt-5 p-6 bg-white shadow-md rounded-md">
 
-<h1 class="text-center">List of Products</h1>
+    <h2 class="text-2xl font-semibold mb-4">Product Management</h2>
 
-<div class="container ">
-    <a class="btn btn-primary  my-3" href="add-product.php">Add Product</a>
+    <div>
+        <a href="add_product.php" class='text-green-500'>Add</a>
+    </div>
+
+    <div>
+        <h3 class="text-lg font-semibold mb-2">Product List</h3>
+        <table class="w-full border">
+            <thead>
+                <tr>
+                    <th class="border p-2">Product ID</th>
+                    <th class="border p-2">Reference</th>
+                    <th class="border p-2">Image</th>
+                    <th class="border p-2">Barcode</th>
+                    <th class="border p-2">Product Name</th>
+                    <th class="border p-2">Purchase Price</th>
+                    <th class="border p-2">Final Price</th>
+                    <th class="border p-2">Price Offer</th>
+                    <th class="border p-2">Description</th>
+                    <th class="border p-2">Min Quantity</th>
+                    <th class="border p-2">Stock Quantity</th>
+                    <th class="border p-2">Category</th>
+                    <th class="border p-2">Status</th>
+                    <th class="border p-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Retrieve products from the database and display them in the table
+                $productDAO = new ProductDAO(); // Replace with your actual ProductDAO class
+                $products = $productDAO->getAllProducts();
+
+                foreach ($products as $product) {
+                    echo "<tr>";
+                    echo "<td class='border p-2'>{$product->getProductId()}</td>";
+                    echo "<td class='border p-2'>{$product->getReference()}</td>";
+                    echo "<td class='border p-2'><img src='{$product->getImage()}' alt='{$product->getLabel()}' class='w-16 h-16'></td>";
+                    echo "<td class='border p-2'>{$product->getBarcode()}</td>";
+                    echo "<td class='border p-2'>{$product->getLabel()}</td>";
+                    echo "<td class='border p-2'>{$product->getPurchasePrice()}</td>";
+                    echo "<td class='border p-2'>{$product->getFinalPrice()}</td>";
+                    echo "<td class='border p-2'>{$product->getPriceOffer()}</td>";
+                    echo "<td class='border p-2'>{$product->getDescription()}</td>";
+                    echo "<td class='border p-2'>{$product->getMinQuantity()}</td>";
+                    echo "<td class='border p-2'>{$product->getStockQuantity()}</td>";
+                    $categorytDAO = new CategoryDAO();
+                    $category = $categorytDAO->getCategoryById($product->getCategoryId());
+                    echo "<td class='border p-2'>{$category->getCategoryName()}</td>";
+                    $disabledText = ($product->isDisabled()) ? '<p class="text-orange-500 hover:underline">Disable</p>' : '<p class="text-green-500 hover:underline">Enabled</p>';
+                    echo "<td class='border p-2'>{$disabledText}</td>";
+                    echo "<td class='border p-2'>";
+                    echo "<a href='edit_product.php?id={$product->getProductId()}' class='text-blue-500'>Edit</a>";
+                    echo " | ";
+                    if ($product->isDisabled()) {
+                        echo "<a href='enable_product.php?id={$product->getProductId()}' class='text-green-500 hover:underline'>Enable</a>";
+                    } else {
+                        echo "<a href='disable_product.php?id={$product->getProductId()}' class='text-orange-500 hover:underline'>Disable</a>";
+                    }
+                    echo "</td>";
+                    echo "</tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+
 </div>
-<div  class="container w-75">
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th class="p-3 border-black" scope="col">Product ID</th>
-            <th class="p-3 border-black" scope="col">Reference</th>
-            <th class="p-3 border-black" scope="col">Image</th>
-            <th class="p-3 border-black" scope="col">barcode</th>
-            <th class="p-3 border-black" scope="col">label</th>
-            <th class="p-3 border-black" scope="col">purchase_price</th>
-            <th class="p-3 border-black" scope="col">final_price</th>
-            <th class="p-3 border-black" scope="col">price offer</th>
-            <th class="p-3 border-black" scope="col">description</th>
-            <th class="p-3 border-black" scope="col">min quantity</th>
-            <th class="p-3 border-black" scope="col">stock quantity</th>
-            <th class="p-3 border-black" scope="col"> category_id</th>
-            <th class="p-3 border-black" scope="col">archif/modifier</th>
-            
-            <!-- Add more headers for additional details if needed -->
-        </tr>
-    </thead>
-    <tbody>
-    <?php
-    foreach ($products as $product) { ?>
-
-        <tr> 
-            <td><?=$product->gettproduct_id()?></td>
-            <td><?=$product->gettreference()?></td>
-            <td><?=$product->gettimage()?></td>
-            <td><?=$product->gettbarcode()?></td>
-            <td><?=$product->gettlabel()?></td>
-            <td><?=$product->gettpurchase_price()?></td>
-            <td><?=$product->gettfinal_price()?></td>
-            <td><?=$product->gettprice_offer()?></td>
-            <td><?=$product->gettdescription()?></td>
-            <td><?=$product->gettmin_quantity()?></td>
-            <td><?=$product->gettstock_quantity()?></td>
-            <td><?=$product->gettcategory_id()?></td>
-            <td>
-            <div class="d-flex mx-1">
-                         <form method="post" action="disayble_product.php"> 
-                          <input type="hidden" name="product_id" value="<?=$product->gettproduct_id()?>" />
-                            <button type="submit" class="btn btn-danger" name="delete_product">Delete</button>
-                         </form>
-                         
-
-                         
-                         <form method="post" action="modify_prod.php"> 
-                          <input type="hidden" name="product_id" value="<?=$product->gettproduct_id()?>" />
-                            <button type="submit" class="btn btn-primary" name="modify_product">modify</button></td>
-                         </form>
-                         </div>
-            </td>
-
-          
-            <!-- Add more table cells for additional details if needed -->
-        </tr>
-    <?php } ?>
-    </tbody>
-</table>
-</div>
-</body>
-</html>
